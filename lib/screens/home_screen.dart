@@ -22,41 +22,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
-  // late MyProvider _appProvider;
-
-  // @override
-  // void didChangeDependencies() {
-  //   _appProvider = Provider.of<MyProvider>(context, listen: false);
-  //   super.didChangeDependencies();
-  // }
-  // @override
-  // void initState() {
-
-  // notificationsActionStreamSubscription = AwesomeNotifications().actionStream.listen((action) {
-  //   if(action.buttonKeyPressed == "Answer"){
-  //     getCallType().then((value) {
-  //       Get.off(CallScreen(value));
-  //
-  //     });
-  //   }else if(action.buttonKeyPressed == "Cancel"){
-  //     FireBaseHelper().updateCallStatus(_appProvider,"false");
-  //     cancelCall(_appProvider,"User cancel the call");
-  //
-  //   }
-  // });
-  // super.initState();
-  // getDeviceToken().then((value) {
-  //   updateUserToken(Provider.of<MyProvider>(context, listen: false).auth.currentUser!.email, value);
-  // });
-  // onTokenRefresh(Provider.of<MyProvider>(context, listen: false).auth.currentUser!.email);
-  // }
-
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     FireBaseHelper()
         .updateUserStatus(UserStatus.online, GlobalClass.auth.currentUser!.uid);
-    // updatePeerDevice(Provider.of<MyProvider>(context,listen: false).auth.currentUser!.email, Provider.of<MyProvider>(context,listen: false).peerUserData!["email"]);
     super.initState();
   }
 
@@ -66,22 +36,18 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       case AppLifecycleState.paused:
         FireBaseHelper().updateUserStatus(
             FieldValue.serverTimestamp(), GlobalClass.auth.currentUser!.uid);
-        // updatePeerDevice(Provider.of<MyProvider>(context,listen: false).auth.currentUser!.email, "0");
         break;
       case AppLifecycleState.inactive:
         FireBaseHelper().updateUserStatus(
             FieldValue.serverTimestamp(), GlobalClass.auth.currentUser!.uid);
-        // updatePeerDevice(Provider.of<MyProvider>(context,listen: false).auth.currentUser!.email, "0");
         break;
       case AppLifecycleState.detached:
         FireBaseHelper().updateUserStatus(
             FieldValue.serverTimestamp(), GlobalClass.auth.currentUser!.uid);
-        // updatePeerDevice(Provider.of<MyProvider>(context,listen: false).auth.currentUser!.email, "0");
         break;
       case AppLifecycleState.resumed:
         FireBaseHelper().updateUserStatus(
             UserStatus.online, GlobalClass.auth.currentUser!.uid);
-        // updatePeerDevice(Provider.of<MyProvider>(context,listen: false).auth.currentUser!.email, Provider.of<MyProvider>(context,listen: false).peerUserData!["email"]);
         break;
     }
     super.didChangeAppLifecycleState(state);
@@ -90,8 +56,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-
-    // updatePeerDevice(_appProvider.auth.currentUser!.email, "0");
     super.dispose();
   }
 
@@ -105,8 +69,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           actions: [
             IconButton(
                 onPressed: () {
-                  // Navigator.of(context).pushNamedAndRemoveUntil(
-                  //     'login', (Route<dynamic> route) => false);
                   showDialog(
                       context: context,
                       builder: (context) {
@@ -140,7 +102,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                 },
                                 child: const Text("No")),
                           ],
-                          content: const Text("Are you sure you want to log out?"),
+                          content:
+                              const Text("Are you sure you want to log out?"),
                         );
                       });
                 },
@@ -161,8 +124,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  // color: Color(0xFF9899A5)
-                  // color: AppColors.textFaded,
                 ),
               ),
             ),
