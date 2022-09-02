@@ -1,7 +1,15 @@
+import 'package:chat_app/models/chat_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class GlobalClass {
   static FirebaseAuth auth = FirebaseAuth.instance;
+  static ChatUser thisUser = ChatUser(
+    email: "",
+    userStatus: "",
+    chatWith: "",
+    name: "",
+    userId: "",
+  );
 }
 
 class MessageType {

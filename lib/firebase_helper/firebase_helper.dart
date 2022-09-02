@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chat_app/constants/global_constants.dart';
+import 'package:chat_app/models/chat_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -91,6 +92,16 @@ class FireBaseHelper {
         .collection(myId)
         .orderBy("msgTime", descending: true)
         .snapshots();
+  }
+
+  void setGlobalCurrentUser(String myId) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(myId)
+        .get()
+        .then((value) {
+      GlobalClass.thisUser = ChatUser.fromDocument(value);
+    });
   }
 
   void sendMessage(

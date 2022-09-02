@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_app/constants/global_constants.dart';
 import 'package:chat_app/provider/shared_prefs.dart';
 import 'package:chat_app/screens/register.dart';
@@ -117,6 +119,7 @@ class LoginState extends State<Login> {
                                     // Navigator.of(context)
                                     //     .pushNamedAndRemoveUntil('all_users',
                                     //         (Route<dynamic> route) => false);
+                                    // log(result);
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
