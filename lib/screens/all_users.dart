@@ -9,6 +9,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 
 import '../Utils.dart';
+import '../constants/colors.dart';
 import '../constants/firestore_constants.dart';
 import '../constants/global_constants.dart';
 import '../firebase_helper/firebase_helper.dart';
@@ -33,8 +34,8 @@ class _AllUsersState extends State<AllUsers> {
         children: [
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: FireBaseHelper().getFirestoreData(
-                  FirestoreConstants.pathUserCollection, 10, null),
+              stream: FireBaseHelper()
+                  .getFirestoreData(FirestoreConstants.pathUserCollection, 10),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData) {
@@ -81,16 +82,41 @@ class _AllUsersState extends State<AllUsers> {
         return const SizedBox.shrink();
       } else {
         return Container(
-          padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockWidth * 3),
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.blockWidth * 3, vertical: 5),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.account_circle,
-                color: Colors.grey.shade600,
-                size: 80,
-              ),
+              Container(
+                  height: 60,
+                  width: 60,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                      color: COLORS.primary.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(100)),
+                  child: userChat.photoUrl == "" || userChat.photoUrl == null
+                      ? Image.asset("images/avatar.png")
+                      : Image.network(
+                          userChat.photoUrl.toString(),
+                          fit: BoxFit.fill,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                                strokeWidth: 5,
+                                color: Colors.black,
+                              ),
+                            );
+                          },
+                        )),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16.0),

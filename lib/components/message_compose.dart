@@ -12,6 +12,7 @@ import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
+import '../constants/colors.dart';
 import '../utils.dart';
 import '../firebase_helper/firebase_helper.dart';
 import '../provider/provider.dart';
@@ -112,7 +113,9 @@ class _MessagesComposeState extends State<MessagesCompose>
         SizedBox(
             width: MediaQuery.of(context).size.width - 55,
             child: Card(
-              color: Colors.blueAccent,
+              // color: Colors.blueAccent,
+              color: COLORS.primary,
+
               margin: const EdgeInsets.only(left: 5, right: 5, bottom: 8),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25)),
@@ -237,7 +240,7 @@ class _MessagesComposeState extends State<MessagesCompose>
           padding: const EdgeInsets.only(bottom: 8.0, right: 2),
           child: CircleAvatar(
             radius: 25,
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: COLORS.primary,
             child: IconButton(
                 onPressed: () async {
                   // if (sendChatButton) {

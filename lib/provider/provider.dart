@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_app/constants/global_constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,6 +43,7 @@ class MyProvider with ChangeNotifier {
                   snapshot.data!.docs[index]['messageReceiverId'].toString())
           .get()
           .then((QuerySnapshot value) {
+        log(value.docs.toString());
         peerUserData = value.docs[0];
         Navigator.push(
           context,
@@ -58,6 +61,8 @@ class MyProvider with ChangeNotifier {
                   snapshot.data!.docs[index]['messageSenderId'].toString())
           .get()
           .then((QuerySnapshot value) {
+        log(value.docs.toString());
+
         peerUserData = value.docs[0];
         Navigator.push(
           context,

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:chat_app/constants/colors.dart';
 import 'package:chat_app/constants/global_constants.dart';
 import 'package:chat_app/firebase_helper/firebase_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -74,13 +75,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             uiSettings: [
                               AndroidUiSettings(
                                   toolbarTitle: 'Cropper',
-                                  toolbarColor: Colors.deepOrange,
+                                  toolbarColor: COLORS.primary,
                                   toolbarWidgetColor: Colors.white,
                                   initAspectRatio:
-                                      CropAspectRatioPreset.original,
+                                      CropAspectRatioPreset.original,                                      
                                   lockAspectRatio: false),
                               IOSUiSettings(
                                 title: 'Cropper',
+                                aspectRatioLockEnabled: true,
                               ),
                             ],
                           );

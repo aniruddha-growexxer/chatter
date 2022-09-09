@@ -1,3 +1,4 @@
+import 'package:chat_app/constants/colors.dart';
 import 'package:chat_app/provider/provider.dart';
 import 'package:chat_app/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chatter',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: COLORS.primary
       ),
       home: const SplashScreen(),
     );

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../components/components.dart';
+import '../constants/colors.dart';
 import '../firebase_helper/firebase_helper.dart';
 import '../provider/provider.dart';
 
@@ -14,10 +15,8 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen>  with WidgetsBindingObserver{
+class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   late MyProvider _appProvider;
-
-  
 
   @override
   void didChangeDependencies() {
@@ -25,16 +24,16 @@ class _ChatScreenState extends State<ChatScreen>  with WidgetsBindingObserver{
     super.didChangeDependencies();
   }
 
-  
-
-  
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: COLORS.primary,
           leading: Container(
             // color: Colors.amber,
+            // color: COLORS.primary,
+
             margin: EdgeInsets.only(left: SizeConfig.blockWidth * 5),
             child: GestureDetector(
               child: Icon(Icons.arrow_back_ios),

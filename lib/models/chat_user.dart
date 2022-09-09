@@ -35,6 +35,7 @@ class ChatUser {
         "chatWith": chatWith,
         "name": name,
         "userId": userId,
+        "photoUrl": photoUrl,
       };
 
   factory ChatUser.fromDocument(DocumentSnapshot snapshot) {
@@ -42,12 +43,14 @@ class ChatUser {
     String userStatus = "";
     String chatWith = "";
     String name = "";
+    String photoUrl = "";
 
     try {
       email = snapshot.get(FirestoreConstants.email);
       userStatus = snapshot.get(FirestoreConstants.userStatus).toString();
       chatWith = snapshot.get(FirestoreConstants.chatWith);
       name = snapshot.get(FirestoreConstants.name);
+      photoUrl = snapshot.get(FirestoreConstants.photoUrl);
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -58,6 +61,7 @@ class ChatUser {
         userStatus: userStatus,
         chatWith: chatWith,
         name: name,
+        photoUrl: photoUrl,
         email: email);
   }
 }

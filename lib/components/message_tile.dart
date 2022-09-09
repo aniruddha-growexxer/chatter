@@ -62,85 +62,82 @@ class _MessageTileState extends State<MessageTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        margin: const EdgeInsets.only(
-          top: 5.0,
-          bottom: 5.0,
+    return Container(
+      margin: const EdgeInsets.only(
+        top: 5.0,
+        bottom: 5.0,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      decoration: const BoxDecoration(
+        // color: Colors.white54,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20.0),
+          bottomRight: Radius.circular(20.0),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        decoration: const BoxDecoration(
-          color: Colors.white54,
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20.0),
-            bottomRight: Radius.circular(20.0),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: <Widget>[
-                Icon(
-                  Icons.account_circle,
-                  color: Colors.grey.shade600,
-                  size: 50,
-                ),
-                const SizedBox(
-                  width: 10.0,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      isMe
-                          ? widget.recentMessage['messageTo'].toString()
-                          : widget.recentMessage['messageFrom'].toString(),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: <Widget>[
+              // Icon(
+              //   Icons.account_circle,
+              //   color: Colors.grey.shade600,
+              //   size: 50,
+              // ),
+              // const SizedBox(
+              //   width: 10.0,
+              // ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    isMe
+                        ? widget.recentMessage['messageTo'].toString()
+                        : widget.recentMessage['messageFrom'].toString(),
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: Text(
+                      widget.recentMessage["message"].toString(),
                       style: const TextStyle(
                         color: Colors.grey,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 12.0,
+                        // fontWeight: FontWeight.w600,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      child: Text(
-                        widget.recentMessage["message"].toString(),
-                        style: const TextStyle(
-                          color: Colors.blueGrey,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Text(
-              Jiffy(
-                      widget.recentMessage['msgTime'] == null
-                          ? DateFormat('dd-MM-yyyy hh:mm a').format(
-                              DateTime.parse(
-                                  Timestamp.now().toDate().toString()))
-                          : DateFormat('dd-MM-yyyy hh:mm a').format(
-                              DateTime.parse(widget.recentMessage['msgTime']
-                                  .toDate()
-                                  .toString())),
-                      "dd-MM-yyyy hh:mm a")
-                  .fromNow(),
-              style: const TextStyle(
-                color: Colors.grey,
-                fontSize: 15.0,
-                fontWeight: FontWeight.bold,
+                  ),
+                ],
               ),
+            ],
+          ),
+          Text(
+            Jiffy(
+                    widget.recentMessage['msgTime'] == null
+                        ? DateFormat('dd-MM-yyyy hh:mm a').format(
+                            DateTime.parse(Timestamp.now().toDate().toString()))
+                        : DateFormat('dd-MM-yyyy hh:mm a').format(
+                            DateTime.parse(widget.recentMessage['msgTime']
+                                .toDate()
+                                .toString())),
+                    "dd-MM-yyyy hh:mm a")
+                .fromNow(),
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 15.0,
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

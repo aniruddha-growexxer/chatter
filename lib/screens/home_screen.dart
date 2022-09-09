@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:chat_app/constants/colors.dart';
 import 'package:chat_app/constants/global_constants.dart';
 import 'package:chat_app/constants/size_config.dart';
 import 'package:chat_app/provider/shared_prefs.dart';
@@ -84,7 +85,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     padding: EdgeInsets.symmetric(
                       horizontal: SizeConfig.blockWidth * 2,
                     ),
-                    color: Colors.blue,
+                    color: COLORS.primary,
                     child: Row(
                       children: [
                         const Text(
@@ -115,7 +116,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       horizontal: 2.0,
                       vertical: 5.0,
                     ),
-                    child: const Text(
+                    child: Text(
                       'Recent Chats',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -127,12 +128,18 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 ],
               ),
               floatingActionButton: FloatingActionButton(
+                backgroundColor: COLORS.primary,
                 child: const Icon(Icons.message),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) {
-                    return const AllUsers();
-                  })));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: ((context) {
+                        return const AllUsers();
+                      }),
+                    ),
+                  );
+                  showOptions = false;
                 },
               ),
             ),
@@ -141,7 +148,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 alignment: Alignment.topRight,
                 child: Container(
                   // height: 200,
-                  width: 200,
+                  width: SizeConfig.blockWidth * 35,
                   decoration: const BoxDecoration(
                     boxShadow: [
                       BoxShadow(
@@ -160,9 +167,13 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   // ignore: prefer_const_literals_to_create_immutables
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       GestureDetector(
                         onTap: () {
+                          setState(() {
+                            showOptions = false;
+                          });
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -174,14 +185,24 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         child: Container(
                           padding: EdgeInsets.symmetric(
                               vertical: SizeConfig.blockHeight * 1.5),
-                          child: const Text(
-                            "Settings",
-                            style: TextStyle(
-                              color: Colors.black,
-                              decoration: TextDecoration.none,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14,
-                            ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: const Icon(Icons.settings),
+                              ),
+                              const Text(
+                                "Settings",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  decoration: TextDecoration.none,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -190,16 +211,29 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         padding: EdgeInsets.symmetric(
                             vertical: SizeConfig.blockHeight * 1.5),
                         child: GestureDetector(
-                          child: const Text(
-                            "Logout",
-                            style: TextStyle(
-                              decoration: TextDecoration.none,
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14,
-                            ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: const Icon(Icons.logout),
+                              ),
+                              const Text(
+                                "Logout",
+                                style: TextStyle(
+                                  decoration: TextDecoration.none,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
                           ),
                           onTap: () {
+                            setState(() {
+                              showOptions = false;
+                            });
                             showDialog(
                                 context: context,
                                 builder: (context) {

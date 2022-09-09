@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
+import '../constants/colors.dart';
 import '../constants/global_constants.dart';
 
 class SenderMessageCard extends StatefulWidget {
@@ -104,7 +105,9 @@ class _SenderMessageCardState extends State<SenderMessageCard> {
       child: Card(
         elevation: 1,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        color: Colors.blue,
+        // color: Colors.blue,
+        color: COLORS.primary,
+
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,

@@ -70,19 +70,13 @@ class FireBaseHelper {
   }
 
   Stream<QuerySnapshot> getFirestoreData(
-      String collectionPath, int limit, String? textSearch) {
-    if (textSearch?.isNotEmpty == true) {
-      return firebaseFirestore
-          .collection(collectionPath)
-          .limit(limit)
-          .where(FirestoreConstants.name, isEqualTo: textSearch)
-          .snapshots();
-    } else {
-      return firebaseFirestore
-          .collection(collectionPath)
-          .limit(limit)
-          .snapshots();
-    }
+    String collectionPath,
+    int limit,
+  ) {
+    return firebaseFirestore
+        .collection(collectionPath)
+        .limit(limit)
+        .snapshots();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getLastMessages(
@@ -114,11 +108,11 @@ class FireBaseHelper {
 
   UploadTask uploadProfilePicture(String myId, File file) {
     // try {
-      return FirebaseStorage.instance
-          .ref()
-          .child("avatarPhotos")
-          .child(myId)
-          .putFile(file);
+    return FirebaseStorage.instance
+        .ref()
+        .child("avatarPhotos")
+        .child(myId)
+        .putFile(file);
   }
 
   void sendMessage(

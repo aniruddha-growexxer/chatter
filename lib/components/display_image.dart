@@ -6,6 +6,8 @@ import 'package:chat_app/constants/global_constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/colors.dart';
+
 class DisplayImage extends StatelessWidget {
   // final String imagePath;
   final VoidCallback onPressed;
@@ -48,35 +50,33 @@ class DisplayImage extends StatelessWidget {
           var data = snapshot.requireData.data();
           log(data.toString());
           // print(data.toString());
-          return CircleAvatar(
-            radius: 75,
-            backgroundColor: color,
-            child: CircleAvatar(
-              backgroundColor: Colors.transparent,
-              backgroundImage: data!["photoUrl"] == "" ||
-                      data["photoUrl"] == null
-                  ? AssetImage("images/avatar.png") as ImageProvider
-                  : Image.network(
-                      data["photoUrl"],
-                      // "https://thumbs.dreamstime.com/z/portrait-lion-black-detail-face-lion-hight-quality-portrait-lion-portrait-animal-portrait-lion-black-detail-145612151.jpg",
-                      loadingBuilder: (context, child, loadingProgress) {
-                        log("========");
-                        // log(loadingProgress!.cumulativeBytesLoaded.toString());
-                        if (loadingProgress == null) return child;
-                        return Center(
-                          child: CircularProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
-                            strokeWidth: 5,
-                            color: Colors.black,
-                          ),
-                        );
-                      },
-                    ).image,
-              radius: 70,
-            ),
+          return Container(
+            // backgroundColor: Colors.transparent,
+            height: 200,
+            width: 200,
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+                color: COLORS.primary.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(100)),
+            child: data!["photoUrl"] == "" || data["photoUrl"] == null
+                ? Image.asset("images/avatar.png")
+                : Image.network(
+                    data["photoUrl"],
+                    fit: BoxFit.fill,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                          strokeWidth: 5,
+                          color: Colors.black,
+                        ),
+                      );
+                    },
+                  ),
           );
         } else {
           return Container();
