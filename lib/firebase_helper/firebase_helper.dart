@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:chat_app/constants/global_constants.dart';
@@ -102,6 +103,22 @@ class FireBaseHelper {
         .then((value) {
       GlobalClass.thisUser = ChatUser.fromDocument(value);
     });
+  }
+
+  // void updateProfilePicture(String myId, String url) {
+  //   FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(myId)
+  //       .update({"photoUrl": url});
+  // }
+
+  UploadTask uploadProfilePicture(String myId, File file) {
+    // try {
+      return FirebaseStorage.instance
+          .ref()
+          .child("avatarPhotos")
+          .child(myId)
+          .putFile(file);
   }
 
   void sendMessage(

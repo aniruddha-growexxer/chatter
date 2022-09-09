@@ -4,10 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/chat_user.dart';
 import '../screens/chat_screen.dart';
 
 class MyProvider with ChangeNotifier {
   QueryDocumentSnapshot<Object?>? peerUserData;
+  late ChatUser currentUser;
 
   void usersClickListener(AsyncSnapshot<QuerySnapshot<Object?>> snapshot,
       int index, BuildContext context) {
