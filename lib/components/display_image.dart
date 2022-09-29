@@ -48,7 +48,7 @@ class DisplayImage extends StatelessWidget {
           AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
         if (snapshot.hasData) {
           var data = snapshot.requireData.data();
-          log(data.toString());
+          // log(data.toString());
           // print(data.toString());
           return Container(
             // backgroundColor: Colors.transparent,

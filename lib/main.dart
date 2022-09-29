@@ -29,7 +29,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chatter',
       theme: ThemeData(
-        primaryColor: COLORS.primary
+        primaryColor: COLORS.primary,
+        bottomSheetTheme:
+            BottomSheetThemeData(backgroundColor: Colors.transparent),
       ),
       home: const SplashScreen(),
     );

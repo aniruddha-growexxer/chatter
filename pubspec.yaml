@@ -37,6 +37,10 @@ dependencies:
   open_file: ^3.2.1
   flutter_local_notifications: ^9.8.0+1
   image_cropper: ^3.0.0
+  story_view: ^0.13.2
+  auto_size_text_field: ^2.1.0
+  uuid: ^3.0.6
+  collection: ^1.16.0
 
 dev_dependencies:
   flutter_test:

@@ -5,10 +5,12 @@ import 'package:chat_app/constants/colors.dart';
 import 'package:chat_app/constants/global_constants.dart';
 import 'package:chat_app/constants/size_config.dart';
 import 'package:chat_app/provider/shared_prefs.dart';
+import 'package:chat_app/screens/all_stories.dart';
 import 'package:chat_app/screens/all_users.dart';
 import 'package:chat_app/screens/login.dart';
 import 'package:chat_app/screens/recent_chats.dart';
 import 'package:chat_app/screens/settings_screen.dart';
+import 'package:chat_app/screens/story_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -107,6 +109,21 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           // icon: const Icon(Icons.logout_sharp),
                           icon: const Icon(Icons.more_vert),
                         ),
+                        IconButton(
+                          color: Colors.white,
+                          icon: const Icon(Icons.electric_bolt),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) {
+                                  return const AllStories();
+                                }),
+                              ),
+                            );
+                            showOptions = false;
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -127,20 +144,26 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   const RecentChats(),
                 ],
               ),
-              floatingActionButton: FloatingActionButton(
-                backgroundColor: COLORS.primary,
-                child: const Icon(Icons.message),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: ((context) {
-                        return const AllUsers();
-                      }),
-                    ),
-                  );
-                  showOptions = false;
-                },
+              floatingActionButton: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FloatingActionButton(
+                    heroTag: "btn1",
+                    backgroundColor: COLORS.primary,
+                    child: const Icon(Icons.message),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: ((context) {
+                            return const AllUsers();
+                          }),
+                        ),
+                      );
+                      showOptions = false;
+                    },
+                  ),
+                ],
               ),
             ),
             if (showOptions)

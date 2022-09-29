@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:chat_app/constants/global_constants.dart';
 import 'package:chat_app/models/chat_user.dart';
+import 'package:chat_app/models/story_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -75,7 +76,7 @@ class FireBaseHelper {
   ) {
     return firebaseFirestore
         .collection(collectionPath)
-        .limit(limit)
+        // .limit(limit)
         .snapshots();
   }
 
@@ -87,6 +88,44 @@ class FireBaseHelper {
         .collection(myId)
         .orderBy("msgTime", descending: true)
         .snapshots();
+  }
+
+  //story functions
+  void addNewStory({required StoryModel storyModel}) {
+    FirebaseFirestore.instance
+        .collection('stories')
+        .doc(storyModel.userId)
+        .collection(storyModel.userId)
+        .doc("${Timestamp.now().millisecondsSinceEpoch}")
+        .set({
+      FirestoreConstants.storyId: storyModel.storyId,
+      FirestoreConstants.timestamp: storyModel.timestamp,
+      FirestoreConstants.userId: storyModel.userId,
+      FirestoreConstants.userName: storyModel.userName,
+      FirestoreConstants.storyText: storyModel.storyText,
+      FirestoreConstants.storyBackgroundColor: storyModel.storyBackgroundColor,
+      FirestoreConstants.storyImageUrl: storyModel.storyImageUrl,
+    });
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllStories(
+      BuildContext context, String userId) {
+    return FirebaseFirestore.instance
+        .collection('stories')
+        // .limit(10)
+        .doc(userId)
+        .collection(userId)
+        .orderBy("timestamp", descending: true)
+        .snapshots();
+  }
+
+  UploadTask uploadStoryImage(String myId, File file) {
+    // try {
+    return FirebaseStorage.instance
+        .ref()
+        .child("storyImages")
+        .child(myId)
+        .putFile(file);
   }
 
   void setGlobalCurrentUser(String myId) {

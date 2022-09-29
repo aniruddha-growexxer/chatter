@@ -79,7 +79,7 @@ class _RecentChatsState extends State<RecentChats> {
                                       snapshot.data!.docs[index]["messageTo"] &&
                                   element.userId !=
                                       GlobalClass.auth.currentUser!.uid) {
-                                log("${element.userId} ${element.name} ${snapshot.data!.docs[index]["messageReceiverId"]} ${snapshot.data!.docs[index]["messageTo"]}");
+                                // log("${element.userId} ${element.name} ${snapshot.data!.docs[index]["messageReceiverId"]} ${snapshot.data!.docs[index]["messageTo"]}");
                                 tempUrl = element.photoUrl.toString();
                               } else if (element.userId ==
                                       snapshot.data!.docs[index]
@@ -93,7 +93,7 @@ class _RecentChatsState extends State<RecentChats> {
                                 tempUrl = element.photoUrl.toString();
                               }
                             }
-                            log("tempUrl is $tempUrl");
+                            // log("tempUrl is $tempUrl");
                             return Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Row(

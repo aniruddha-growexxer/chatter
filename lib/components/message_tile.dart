@@ -92,7 +92,8 @@ class _MessageTileState extends State<MessageTile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    isMe
+                    widget.recentMessage['messageSenderId'].toString() ==
+                            GlobalClass.auth.currentUser!.uid
                         ? widget.recentMessage['messageTo'].toString()
                         : widget.recentMessage['messageFrom'].toString(),
                     style: const TextStyle(
