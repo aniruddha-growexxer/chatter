@@ -121,9 +121,10 @@ class HomeScreenState extends State<HomeScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: SizeConfig.blockWidth * 2,
-                        vertical: 5,
+                      padding: EdgeInsets.only(
+                        left: 10,
+                        right: 10,
+                        top: 8,
                       ),
                       color: COLORS.primary,
                       child: Row(
@@ -152,7 +153,10 @@ class HomeScreenState extends State<HomeScreen>
                     ),
                     TabBar(
                       labelPadding: EdgeInsets.zero,
-                      indicatorColor: COLORS.deepBlue,                      
+                      indicatorColor: COLORS.deepBlue,
+                      overlayColor: MaterialStateColor.resolveWith(
+                          (states) => Colors.red),
+                      automaticIndicatorColorAdjustment: true,
                       indicatorSize: TabBarIndicatorSize.tab,
                       // unselectedLabelColor: COLORS.primary,
                       indicatorWeight: 2,

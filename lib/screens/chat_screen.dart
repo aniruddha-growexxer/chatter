@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_app/constants/global_constants.dart';
 import 'package:chat_app/constants/size_config.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,9 +27,19 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   @override
+  void initState() {
+    super.initState();
+    log(Provider.of<MyProvider>(context, listen: false)
+        .peerUserData!
+        .data()
+        .toString());
+  }
+
+  @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
+        backgroundColor: Colors.grey.shade200,
         appBar: AppBar(
           backgroundColor: COLORS.primary,
           leading: Container(
@@ -47,11 +59,43 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           title: Row(
             children: [
               Container(
-                child: const Icon(
-                  Icons.account_circle,
-                  size: 40,
-                ),
-              ),
+                  height: 40,
+                  width: 40,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                      color: COLORS.primary.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(100)),
+                  child: Provider.of<MyProvider>(context, listen: false)
+                              .peerUserData!["photoUrl"] ==
+                          ""
+                      ? Container(
+                          child: const Icon(
+                            Icons.account_circle,
+                            size: 40,
+                          ),
+                        )
+                      : Image.network(
+                          Provider.of<MyProvider>(context, listen: false)
+                              .peerUserData!["photoUrl"]
+                              .toString(),
+                          fit: BoxFit.fill,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                                strokeWidth: 5,
+                                color: Colors.black,
+                              ),
+                            );
+                          },
+                        )),
               Container(
                 margin: const EdgeInsets.only(left: 20),
                 child: Column(

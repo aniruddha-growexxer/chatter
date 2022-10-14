@@ -93,7 +93,7 @@ class _ReceiverMessageCardState extends State<ReceiverMessageCard> {
     return Align(
       alignment: Alignment.centerLeft,
       child: Card(
-        color: Colors.white24,
+        color: Colors.white,
         elevation: 1,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         // color: Colors.purple[200],
@@ -105,7 +105,7 @@ class _ReceiverMessageCardState extends State<ReceiverMessageCard> {
             Padding(
               padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
               child: Text(widget.time,
-                  style: const TextStyle(fontSize: 13, color: Colors.white)),
+                  style: TextStyle(fontSize: 13, color: Colors.grey.shade300)),
             )
           ],
         ),
