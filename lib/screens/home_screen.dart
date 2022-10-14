@@ -26,7 +26,8 @@ class HomeScreen extends StatefulWidget {
   HomeScreenState createState() => HomeScreenState();
 }
 
-class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
+class HomeScreenState extends State<HomeScreen>
+    with WidgetsBindingObserver, TickerProviderStateMixin {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
@@ -34,6 +35,13 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         .updateUserStatus(UserStatus.online, GlobalClass.auth.currentUser!.uid);
     FireBaseHelper().setGlobalCurrentUser(GlobalClass.auth.currentUser!.uid);
     super.initState();
+    tabController = TabController(length: 2, vsync: this);
+    tabController.addListener(() {
+      // print("${tabController.index}");
+      setState(() {
+        _currentTabIndex = tabController.index;
+      });
+    });
   }
 
   bool showOptions = false;
@@ -63,13 +71,39 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    FireBaseHelper().updateUserStatus(
+        FieldValue.serverTimestamp(), GlobalClass.auth.currentUser!.uid);
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
+  Widget tab({required String title}) {
+    return Container(
+      width: double.infinity,
+      color: COLORS.primary,
+      padding: const EdgeInsets.symmetric(
+        // horizontal: 2.0,
+        vertical: 20.0,
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        title,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+    );
+  }
+
+  late TabController tabController;
+  int _currentTabIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    tabController.animateTo(_currentTabIndex);
     return SafeArea(
       child: GestureDetector(
         onTap: () {
@@ -77,182 +111,139 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             showOptions = false;
           });
         },
-        child: Stack(
-          children: [
-            Scaffold(
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockWidth * 2,
-                    ),
-                    color: COLORS.primary,
-                    child: Row(
-                      children: [
-                        const Text(
-                          "Chatter",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 18,
+        child: DefaultTabController(
+          length: 2,
+          initialIndex: _currentTabIndex,
+          child: Stack(
+            children: [
+              Scaffold(
+                body: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.blockWidth * 2,
+                        vertical: 5,
+                      ),
+                      color: COLORS.primary,
+                      child: Row(
+                        children: [
+                          const Text(
+                            "Chatter",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
                           ),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          color: Colors.white,
-                          onPressed: () {
+                          const Spacer(),
+                          IconButton(
+                            color: Colors.white,
+                            onPressed: () {
+                              setState(() {
+                                showOptions = true;
+                              });
+                            },
+                            // icon: const Icon(Icons.logout_sharp),
+                            icon: const Icon(Icons.more_vert),
+                          ),
+                        ],
+                      ),
+                    ),
+                    TabBar(
+                      labelPadding: EdgeInsets.zero,
+                      indicatorColor: COLORS.deepBlue,                      
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      // unselectedLabelColor: COLORS.primary,
+                      indicatorWeight: 2,
+                      onTap: (index) {
+                        setState(() {
+                          _currentTabIndex = index;
+                        });
+                      },
+                      controller: tabController,
+                      tabs: [
+                        tab(title: 'CHATS'),
+                        tab(title: 'STATUS'),
+                      ],
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        controller: tabController,
+                        children: const [
+                          RecentChats(),
+                          AllStories(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (showOptions)
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    // height: 200,
+                    width: SizeConfig.blockWidth * 35,
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 2,
+                          offset: Offset(1, 1),
+                          spreadRadius: 0.1,
+                        )
+                      ],
+                      color: Colors.white,
+                    ),
+                    margin: EdgeInsets.only(
+                      top: SizeConfig.blockHeight * 2,
+                      right: SizeConfig.blockWidth * 5,
+                    ),
+                    // ignore: prefer_const_literals_to_create_immutables
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
                             setState(() {
-                              showOptions = true;
+                              showOptions = false;
                             });
-                          },
-                          // icon: const Icon(Icons.logout_sharp),
-                          icon: const Icon(Icons.more_vert),
-                        ),
-                        IconButton(
-                          color: Colors.white,
-                          icon: const Icon(Icons.electric_bolt),
-                          onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: ((context) {
-                                  return const AllStories();
-                                }),
+                                builder: (context) =>
+                                    SettingsScreen(user: GlobalClass.thisUser),
                               ),
                             );
-                            showOptions = false;
                           },
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Users(),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 2.0,
-                      vertical: 5.0,
-                    ),
-                    child: Text(
-                      'Recent Chats',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  const RecentChats(),
-                ],
-              ),
-              floatingActionButton: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  FloatingActionButton(
-                    heroTag: "btn1",
-                    backgroundColor: COLORS.primary,
-                    child: const Icon(Icons.message),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: ((context) {
-                            return const AllUsers();
-                          }),
-                        ),
-                      );
-                      showOptions = false;
-                    },
-                  ),
-                ],
-              ),
-            ),
-            if (showOptions)
-              Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                  // height: 200,
-                  width: SizeConfig.blockWidth * 35,
-                  decoration: const BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 2,
-                        offset: Offset(1, 1),
-                        spreadRadius: 0.1,
-                      )
-                    ],
-                    color: Colors.white,
-                  ),
-                  margin: EdgeInsets.only(
-                    top: SizeConfig.blockHeight * 2,
-                    right: SizeConfig.blockWidth * 5,
-                  ),
-                  // ignore: prefer_const_literals_to_create_immutables
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            showOptions = false;
-                          });
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  SettingsScreen(user: GlobalClass.thisUser),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: SizeConfig.blockHeight * 1.5),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: const Icon(Icons.settings),
+                                ),
+                                const Text(
+                                  "Settings",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    decoration: TextDecoration.none,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: SizeConfig.blockHeight * 1.5),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: const Icon(Icons.settings),
-                              ),
-                              const Text(
-                                "Settings",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  decoration: TextDecoration.none,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
                           ),
                         ),
-                      ),
-                      const Divider(),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: SizeConfig.blockHeight * 1.5),
-                        child: GestureDetector(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: const Icon(Icons.logout),
-                              ),
-                              const Text(
-                                "Logout",
-                                style: TextStyle(
-                                  decoration: TextDecoration.none,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
+                        const Divider(),
+                        GestureDetector(
                           onTap: () {
                             setState(() {
                               showOptions = false;
@@ -297,15 +288,38 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                   );
                                 });
                           },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: SizeConfig.blockHeight * 1.5),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: const Icon(Icons.logout),
+                                ),
+                                const Text(
+                                  "Logout",
+                                  style: TextStyle(
+                                    decoration: TextDecoration.none,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              )
-            else
-              Container(),
-          ],
+                )
+              else
+                Container(),
+            ],
+          ),
         ),
       ),
     );

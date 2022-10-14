@@ -185,11 +185,7 @@ class _AllStoriesState extends State<AllStories> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: COLORS.primary,
-        title: const Text("Stories"),
-      ),
+    return Scaffold(      
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
