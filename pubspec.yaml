@@ -44,6 +44,7 @@ dependencies:
   reusekit: 
     git: 
       url: https://github.com/nakul-growexxer/reusekit
+  flutter_launcher_icons: ^0.10.0
 
 dev_dependencies:
   flutter_test:
